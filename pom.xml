@@ -14,12 +14,57 @@
     </properties>
 
     <dependencies>
+        <!-- п.3 ЗД - ДОБАВЛЕНИЕ ЗАВИСИМОСТЕЙ -->
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+        <!-- Apache Commons Lang - пакет служебных классов Java для классов, которые входят в иерархию java.lang или считаются стандартными -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.12.0</version>
+        </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-controls -->
+        <!-- Модуль JavaFX- упр-я пользовательским интерфейсом, такие как кнопки, таблицы и деревья, для создания насыщенных настольных приложений.-->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>18.0.1</version>
+            <classifier>win</classifier>
+        </dependency>
+
+        <!-- javarush -->
+        <dependency>
+            <groupId>com.javarush</groupId>
+            <artifactId>desktop-game-engine</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
+        <!--  Основной пакет для механизма тестирования JUnit Jupiter -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.8.2</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
-        <plugins>
+        <!--    п.6 ЗД -секция РЕСУРСЫ  -->
+        <resources>
+        <resource>
+            <directory>${project.basedir}/lib</directory>
+            <targetPath>lib</targetPath>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </resource>
+        </resources>
+
+      <plugins>
             <!-- Usual compilation -->
+            <!-- Без изменений -п.4.2 ЗД -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -38,6 +83,52 @@
                     <mainClass>com.javarush.games.racer.RacerGame</mainClass>
                 </configuration>
             </plugin>
+            <!--    п.4 ЗД - ДОБАВЛЕНИЕ ПЛАГИНОВ  -->
+            <!-- Установка локальной зависимости (из.lib  в лок. репозиторий) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <groupId>com.javarush</groupId>
+                    <artifactId>desktop-game-engine</artifactId>
+                    <version>1.0</version>
+                    <packaging>jar</packaging>
+                    <file>${basedir}/lib/desktop-game-engine-1.0.jar</file>
+                </configuration>
+            </plugin>
+
+            <!-- п.4 ЗД - Сборка JAR с зависимостями -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <mainClass>org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader</mainClass>
+                        </manifest>
+                        <manifestEntries>
+                            <Rsrc-Main-Class>com.javarush.games.racer.RacerGame</Rsrc-Main-Class>
+                            <Class-Path>./</Class-Path>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+
+          <!-- п.5 ЗД - Тесты-->
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-surefire-plugin</artifactId>
+              <version>3.2.3</version>
+              <configuration>
+                  <excludes>
+                      <exclude>**/StrangeTest.java</exclude>
+                  </excludes>
+              </configuration>
+          </plugin>
         </plugins>
     </build>
 
