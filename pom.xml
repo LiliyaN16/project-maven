@@ -64,7 +64,7 @@
 
       <plugins>
             <!-- Usual compilation -->
-            <!-- Без изменений -п.4.2 ЗД -->
+            <!-- Без изменений-п.4.2 ЗД -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -84,7 +84,7 @@
                 </configuration>
             </plugin>
             <!--    п.4 ЗД - ДОБАВЛЕНИЕ ПЛАГИНОВ  -->
-            <!-- Установка локальной зависимости (из.lib  в лок. репозиторий) -->
+            <!-- Установка локальной зависимости (из.lib в лок. Репозиторий) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-install-plugin</artifactId>
